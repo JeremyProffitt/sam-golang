@@ -18,7 +18,7 @@ jobs:
         run: |
           pip3 install pytest
       - name: display region
-        run: echo ${{ secrets.aws.AWS_REGION }}
+        run: echo ${{ aws.AWS_REGION }}
       - name: Configure AWS credentials
         id: creds
         uses: aws-actions/configure-aws-credentials@v1
