@@ -9,7 +9,9 @@ This is a sample template for api - Below is a brief explanation of what we have
 │   ├── go.mod                  <-- Go dependency definitions
 │   ├── main.go                 <-- Lambda function code
 │   └── main_test.go            <-- Unit tests
-└── template.yaml
+├── template.yaml
+└── .github/workflows           <-- Github Workflow (Pipeline)
+    └── pipeline.yml            <-- pipeline configuration file
 ```
 
 ## Requirements
