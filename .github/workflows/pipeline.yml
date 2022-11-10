@@ -18,13 +18,10 @@ jobs:
         run: |
           pip3 install pytest
       - name: display region
-        run: |
-          if [[ ${{ secrets.AWS_REGION }} == "us-east-1" ]]
-          then
-            echo us-east-1
-          else
-            echo not found
-          fi
+        run: echo AWS_REGION=$AWS_REGION
+        shell: bash
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }} 
       - name: Configure AWS credentials
         id: creds
         uses: aws-actions/configure-aws-credentials@v1
