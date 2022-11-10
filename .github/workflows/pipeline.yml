@@ -19,7 +19,7 @@ jobs:
           pip3 install pytest
       - name: display region
         run: |
-          if [[ ${{ aws.AWS_REGION }} == "us-east-1" ]]
+          if [[ ${{ secrets.AWS_REGION }} == "us-east-1" ]]
           then
             echo us-east-1
           else
