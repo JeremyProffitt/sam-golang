@@ -72,9 +72,9 @@ jobs:
       - name: SAM Deploy
         run: |
           # Create S3 Bucket to store code
-          BRANCH=${REF#refs/heads/}
-          REPOSITORY=`echo $REPO | tr "/" "-"`
-          BUCKET=$BRANCH-$REPOSITORY-${{ secrets.AWS_REGION }}
+          export BRANCH=${REF#refs/heads/}
+          export REPOSITORY=`echo $REPO | tr "/" "-"`
+          export BUCKET=$BRANCH-$REPOSITORY-${{ secrets.AWS_REGION }}
           echo "using bucket $BUCKET"
           aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null \
             || aws s3 mb s3://$BUCKET
