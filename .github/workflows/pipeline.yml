@@ -72,13 +72,16 @@ jobs:
       - name: SAM Deploy
         run: |
           # Create S3 Bucket to store code
-          echo using bucket $ENVIRONMENT
-          aws s3api head-bucket --bucket "$ENVIRONMENT" 2>/dev/null \
-            || aws s3 mb s3://$ENVIRONMENT
+          BRANCH=${REF#refs/heads/}
+          REPOSITORY=`echo $REPO | tr "/" "-"`
+          BUCKET=$BRANCH-$REPOSITORY-${{ secrets.AWS_REGION }}
+          echo using bucket $BUCKET
+          aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null \
+            || aws s3 mb s3://$BUCKET
           # Run SAM Deploy
           sam deploy --template-file .aws-sam/build/template.yaml \
-            --stack-name $ENVIRONMENT \
-            --s3-bucket $ENVIRONMENT \
+            --stack-name $BUCKET \
+            --s3-bucket $BUCKET \
             --parameter-overrides \
               'ParameterKey=Name,ParameterValue=example \
               ParameterKey=Version,ParameterValue=${{ steps.vars.outputs.version }}' \
