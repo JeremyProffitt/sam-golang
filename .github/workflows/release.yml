@@ -12,12 +12,15 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: create tag
+      shell: bash
       id: tag
       run: echo "name=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
     - name: create filename
+      shell: bash
       id: file
       run: echo "name=${{ github.event.repository.name }}-chapter-${{ env.CHAPTER }}-${{ steps.tag.outputs.name }}.zip" >> $GITHUB_ENV
     - name: display outputs
+      shell: bash
       run: |
         echo "tag.name=${{ steps.tag.outputs.name }}"
         echo "file.name=${{ steps.file.outputs.name }}"
