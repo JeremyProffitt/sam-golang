@@ -6,6 +6,7 @@ on:
     branches: [ test-release ]
 env:
   CHAPTER: 10
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -31,10 +32,13 @@ jobs:
         type: 'zip'
         filename: '${{ env.filename }}'
         files: '*'
+    - name: Delete Tag and Release
+      uses: dev-drprasad/delete-tag-and-release@v0.2.0
+      with:
+        delete_release: true # default: false
+        tag_name: ${{ env.tag }}
     - name: Create Release
       id: create_release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       uses: actions/create-release@v1
       with:
         release_name: '${{ env.filename }}'
