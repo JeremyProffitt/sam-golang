@@ -1,8 +1,7 @@
-name: Create Archive
+name: Release Chapter 10 as Zip Archive
 on:
   workflow_dispatch:
-    branches: [ main ]
-
+    branches: [ test-release ]
 env:
   CHAPTER: 10
 
@@ -29,9 +28,9 @@ jobs:
       with:
         type: 'zip'
         filename: '${{ env.filename }}'
-        files: ./*
+        files: '*'
     - name: Upload Release
       uses: ncipollo/release-action
       with:
-        artifacts: "${{ env.filename }}"
-        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: '${{ env.filename }}'
+        token: '${{ secrets.GITHUB_TOKEN }}'
