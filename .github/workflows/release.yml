@@ -14,25 +14,25 @@ jobs:
     - name: create tag
       shell: bash
       id: tag
-      run: echo "name=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      run: echo "tag=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
     - name: create filename
       shell: bash
       id: file
-      run: echo "name=${{ github.event.repository.name }}-chapter-${{ env.CHAPTER }}-${{ steps.tag.outputs.name }}.zip" >> $GITHUB_ENV
+      run: echo "filename=${{ github.event.repository.name }}-chapter-${{ env.CHAPTER }}-${{ env.tag }}.zip" >> $GITHUB_ENV
     - name: display outputs
       shell: bash
       run: |
-        echo "tag.name=${{ steps.tag.outputs.name }}"
-        echo "file.name=${{ steps.file.outputs.name }}"
+        echo "tag.name=${{ env.tag }}"
+        echo "file.name=${{ env.filename }}"
     - name: Archive Release
       uses: thedoctor0/zip-release@main
       with:
         type: 'zip'
-        filename: '${{ steps.file.outputs.name }}'
+        filename: '${{ env.filename }}'
         files: ./*
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "${{ steps.file.outputs.name }}"
+        artifacts: "${{ env.filename }}"
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag_name: "${{ steps.tag.outputs.name }}"
+        tag_name: "${{ env.tag }}"
