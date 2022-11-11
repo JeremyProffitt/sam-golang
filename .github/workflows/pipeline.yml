@@ -48,9 +48,9 @@ jobs:
           ENVIRONMENT=$BRANCH-$REPOSITORY-${{ secrets.AWS_REGION }}
           # In this step we are setting variables and persistenting them
           # into the environment so that they can be utilized in other steps
-          echo "{branch}={$BRANCH}" >> $GITHUB_ENV
-          echo "{repository}={$REPOSITORY}" >> $GITHUB_ENV
-          echo "{environment}={$ENVIRONMENT}" >> $GITHUB_ENV
+          echo "branch=$BRANCH" >> $GITHUB_ENV
+          echo "repository=$REPOSITORY" >> $GITHUB_ENV
+          echo "environment=$ENVIRONMENT" >> $GITHUB_ENV
           # Output variables to ensure their values are set correctly when ran
           echo "The region is ${{ secrets.AWS_REGION }} (shows as *** because it's a secret)"
           echo "The repository is $REPOSITORY"
@@ -58,6 +58,7 @@ jobs:
           echo "The branch is $BRANCH"
           echo "The sha is $HASH"
           echo "The ref is $REF"
+          
       - name: SAM Build
         run: |
           cd hello-world
@@ -72,7 +73,7 @@ jobs:
       - name: SAM Deploy
         run: |
           # Create S3 Bucket to store code
-          BUCKET=${{ steps.vars.outputs.environment }}
+          BUCKET=${{ env.environment }}
           echo "using bucket $BUCKET"
           aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null \
             || aws s3 mb s3://$BUCKET
