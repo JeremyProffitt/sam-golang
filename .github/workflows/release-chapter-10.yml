@@ -30,7 +30,7 @@ jobs:
         filename: '${{ env.filename }}'
         files: '*'
     - name: Upload Release
-      uses: ncipollo/release-action
+      uses: ncipollo/release-action@v1
       with:
         artifacts: '${{ env.filename }}'
         token: '${{ secrets.GITHUB_TOKEN }}'
