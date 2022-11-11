@@ -5,16 +5,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CHAPTER: 10
     steps:
     - uses: actions/checkout@master
+    - name: create tag
+      id: tag
+      run: echo "name=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+    - name: create filename
+      id: file
+      run: echo "name=${{ github.repository }}-Chapter-$CHAPTER-${{ tag.name }}.zip" >> $GITHUB_ENV
     - name: Archive Release
       uses: thedoctor0/zip-release@main
       with:
         type: 'zip'
-        filename: 'Chapter-10.zip'
+        filename: '${{ file.name }}'
         files: ./*
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "Chapter-10.zip"
+        artifacts: "${{ file.name }}"
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: "${{ tag.name }}"
