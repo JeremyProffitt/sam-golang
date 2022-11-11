@@ -64,7 +64,7 @@ jobs:
           sam build
       - name: Run unit tests
         run: |
-          ce hello-world
+          cd hello-world
           go test
           cd ..
       - name: SAM Deploy
