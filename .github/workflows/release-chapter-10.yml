@@ -24,7 +24,7 @@ jobs:
     - name: display variables
       shell: bash
       run: |
-        echo "tag=${{ env.tag }}"
+        echo "tag=${{ env.release_name }}"
         echo "release=${{ env.release_name }}"
     - name: Archive Release
       uses: thedoctor0/zip-release@main
@@ -36,13 +36,13 @@ jobs:
       uses: dev-drprasad/delete-tag-and-release@v0.2.0
       with:
         delete_release: true # default: false
-        tag_name: ${{ env.tag }}
+        tag_name: ${{ env.release_name }}
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       with:
         release_name: '${{ env.release_name }}'
-        tag_name: ${{ env.tag }}
+        tag_name: ${{ env.release_name }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
