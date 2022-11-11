@@ -56,6 +56,8 @@ jobs:
           echo "The repository is $REPOSITORY"
           echo "The environment is $ENVIRONMENT"
           echo "The branch is $BRANCH"
+          echo "The sha is $HASH"
+          echo "The ref is $REF"
       - name: SAM Build
         run: |
           cd hello-world
@@ -70,12 +72,12 @@ jobs:
       - name: SAM Deploy
         run: |
           # Create S3 Bucket to store code
-          aws s3api head-bucket --bucket "${{ steps.vars.outputs.environment }}" 2>/dev/null \
-            || aws s3 mb s3://${{ steps.vars.outputs.environment }}
+          aws s3api head-bucket --bucket "$ENVIRONMENT" 2>/dev/null \
+            || aws s3 mb s3://$ENVIRONMENT
           # Run SAM Deploy
           sam deploy --template-file .aws-sam/build/template.yaml \
-            --stack-name ${{ steps.vars.outputs.environment }} \
-            --s3-bucket ${{ steps.vars.outputs.environment }} \
+            --stack-name $ENVIRONMENT \
+            --s3-bucket $ENVIRONMENT \
             --parameter-overrides \
               'ParameterKey=Name,ParameterValue=example \
               ParameterKey=Version,ParameterValue=${{ steps.vars.outputs.version }}' \
