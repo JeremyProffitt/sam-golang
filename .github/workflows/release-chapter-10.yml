@@ -1,6 +1,8 @@
 name: Release Chapter 10 as Zip Archive
 on:
   workflow_dispatch:
+    branches: [test-release, main]
+  push:
     branches: [ test-release ]
 env:
   CHAPTER: 10
@@ -29,8 +31,24 @@ jobs:
         type: 'zip'
         filename: '${{ env.filename }}'
         files: '*'
-    - name: Upload Release
-      uses: ncipollo/release-action@v1
+    - name: Create Release
+      id: create_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: actions/create-release@v1
       with:
         artifacts: '${{ env.filename }}'
-        token: '${{ secrets.GITHUB_TOKEN }}'
+        release_name: '${{ env.tag }}'
+        tag_name: ${{ env.tag }}
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: '${{ env.filename }}'
+        asset_name: '${{ env.filename }}'
+        asset_content_type: application/zip
