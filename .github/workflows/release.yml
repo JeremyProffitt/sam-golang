@@ -2,11 +2,13 @@ name: Create Archive
 on:
   workflow_dispatch:
     branches: [ main ]
+
+env:
+  CHAPTER: 10
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      CHAPTER: 10
     steps:
     - uses: actions/checkout@master
     - name: create tag
@@ -14,7 +16,7 @@ jobs:
       run: echo "name=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
     - name: create filename
       id: file
-      run: echo "name=${{ github.event.repository.name }}-Chapter-${{ $CHAPTER }}-${{ steps.tag.outputs.name }}.zip" >> $GITHUB_ENV
+      run: echo "name=${{ github.event.repository.name }}-Chapter-$CHAPTER-${{ steps.tag.outputs.name }}.zip" >> $GITHUB_ENV
     - name: Archive Release
       uses: thedoctor0/zip-release@main
       with:
