@@ -75,7 +75,7 @@ jobs:
           BRANCH=${REF#refs/heads/}
           REPOSITORY=`echo $REPO | tr "/" "-"`
           BUCKET=$BRANCH-$REPOSITORY-${{ secrets.AWS_REGION }}
-          echo using bucket $BUCKET
+          echo "using bucket $BUCKET"
           aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null \
             || aws s3 mb s3://$BUCKET
           # Run SAM Deploy
