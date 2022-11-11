@@ -16,21 +16,21 @@ jobs:
     - name: create tag
       shell: bash
       id: tag
-      run: echo "tag=$(date +'%Y%m%d')" >> $GITHUB_ENV
-    - name: create filename
+      run: echo "tag=Chapter-10-$(date +'%Y%m%d')" >> $GITHUB_ENV
+    - name: create release name
       shell: bash
-      id: file
-      run: echo "filename=${{ github.event.repository.name }}-chapter-${{ env.CHAPTER }}-updated-${{ env.tag }}.zip" >> $GITHUB_ENV
+      id: release
+      run: echo "release_name=${{ github.event.repository.name }}-chapter-${{ env.CHAPTER }}" >> $GITHUB_ENV
     - name: display variables
       shell: bash
       run: |
         echo "tag=${{ env.tag }}"
-        echo "filename=${{ env.filename }}"
+        echo "release=${{ env.release_name }}"
     - name: Archive Release
       uses: thedoctor0/zip-release@main
       with:
         type: 'zip'
-        filename: '${{ env.filename }}'
+        filename: '${{ env.release_name }}.zip'
         files: '*'
     - name: Delete Tag and Release
       uses: dev-drprasad/delete-tag-and-release@v0.2.0
@@ -41,7 +41,7 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       with:
-        release_name: '${{ env.filename }}'
+        release_name: '${{ env.release_name }}'
         tag_name: ${{ env.tag }}
         draft: false
         prerelease: false
@@ -52,6 +52,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: '${{ env.filename }}'
-        asset_name: '${{ env.filename }}'
+        asset_path: '${{ env.release_name }}.zip'
+        asset_name: '${{ env.release_name }}.zip'
         asset_content_type: application/zip
