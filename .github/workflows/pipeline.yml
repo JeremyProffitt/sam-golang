@@ -72,6 +72,7 @@ jobs:
       - name: SAM Deploy
         run: |
           # Create S3 Bucket to store code
+          echo using bucket $ENVIRONMENT
           aws s3api head-bucket --bucket "$ENVIRONMENT" 2>/dev/null \
             || aws s3 mb s3://$ENVIRONMENT
           # Run SAM Deploy
