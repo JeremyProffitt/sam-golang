@@ -45,6 +45,8 @@ jobs:
           # Set variables
           BRANCH=${REF#refs/heads/}
           REPOSITORY=`echo $REPO | tr "/" "-"`
+          #This is used for the bucket name so, it must be compliant with naming conventions
+          # https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
           ENVIRONMENT=$REPOSITORY-$BRANCH
           # In this step we are setting variables and persistenting them
           # into the environment so that they can be utilized in other steps
