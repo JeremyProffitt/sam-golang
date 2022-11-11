@@ -58,7 +58,7 @@ jobs:
           echo "The branch is $BRANCH"
       - name: SAM Build
         run: |
-          cd api
+          cd hello-world
           go get .
           cd ..
           sam build
