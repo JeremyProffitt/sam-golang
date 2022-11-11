@@ -50,7 +50,7 @@ jobs:
           # into the environment so that they can be utilized in other steps
           echo "{name}={branch}" >> $BRANCH
           echo "{name}={repository}" >> $REPOSITORY
-          echo "{name}={environment} >> $ENVIRONMENT
+          echo "{name}={environment}" >> $ENVIRONMENT
           # Output variables to ensure their values are set correctly when ran
           echo "The region is ${{ secrets.AWS_REGION }}"
           echo "The repository is $REPOSITORY"
